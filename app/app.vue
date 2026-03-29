@@ -87,7 +87,6 @@ async function logout() {
       </template>
 
       <template #right>
-        <UColorModeButton />
         <UButton
           v-if="loggedIn"
           icon="i-lucide-log-out"
@@ -98,6 +97,7 @@ async function logout() {
         >
           Logout
         </UButton>
+        <UColorModeButton />
       </template>
     </UHeader>
 
