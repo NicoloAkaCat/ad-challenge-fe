@@ -7,9 +7,16 @@ export default defineEventHandler(async (event) => {
 
   const config = useRuntimeConfig(event)
 
-  return await $fetch(`${config.apiBase}/auth/users`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  })
+  try {
+    return await $fetch(`${config.apiBase}/auth/users`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+  } catch (error: any) {
+    throw createError({
+      statusCode: error?.status || 500,
+      message: error?.message || 'Failed to retrieve users information'
+    })
+  }
 })

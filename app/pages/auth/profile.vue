@@ -2,7 +2,26 @@
 definePageMeta({
   middleware: 'auth'
 })
+const { clear } = useUserSession()
 const { data: user, pending, error, refresh } = useFetch<User>('/api/auth/me')
+
+async function deleteUser(id: string) {
+  try {
+    await $fetch(`/api/users/${id}`, {
+      method: 'DELETE'
+    })
+    await clear()
+    await navigateTo('/')
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (e) {
+    useToast().add({
+      title: 'Delete Failed',
+      description: 'Please try again later.',
+      icon: 'i-lucide-circle-x',
+      color: 'error'
+    })
+  }
+}
 </script>
 
 <template>
@@ -36,6 +55,7 @@ const { data: user, pending, error, refresh } = useFetch<User>('/api/auth/me')
             icon="i-lucide-trash-2"
             color="error"
             variant="ghost"
+            @click="deleteUser(user?.id ?? '')"
           >
             Delete Account
           </UButton>
