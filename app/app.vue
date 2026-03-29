@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
 
-const route = useRoute()
-const { loggedIn } = useUserSession()
-
 useHead({
   meta: [{ name: 'viewport', content: 'width=device-width, initial-scale=1' }],
   link: [{ rel: 'icon', href: '/favicon.ico' }],
@@ -21,6 +18,9 @@ useSeoMeta({
   ogTitle: title,
   ogDescription: description
 })
+
+const route = useRoute()
+const { loggedIn, clear } = useUserSession()
 
 const items = computed<NavigationMenuItem[]>(() =>
   !loggedIn.value
@@ -43,6 +43,21 @@ const items = computed<NavigationMenuItem[]>(() =>
         }
       ]
 )
+
+async function logout() {
+  try {
+    await $fetch('/api/auth/logout', { method: 'POST' })
+    await clear()
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    useToast().add({
+      title: 'Logout Failed',
+      description: 'Something went wrong while logging out. Please try again.',
+      icon: 'i-lucide-circle-x',
+      color: 'error'
+    })
+  }
+}
 </script>
 
 <template>
@@ -66,6 +81,16 @@ const items = computed<NavigationMenuItem[]>(() =>
 
       <template #right>
         <UColorModeButton />
+        <UButton
+          v-if="loggedIn"
+          icon="i-lucide-log-out"
+          size="md"
+          color="error"
+          variant="ghost"
+          @click="logout"
+        >
+          Logout
+        </UButton>
       </template>
     </UHeader>
 
