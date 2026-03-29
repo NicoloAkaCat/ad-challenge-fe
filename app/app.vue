@@ -48,6 +48,7 @@ async function logout() {
   try {
     await $fetch('/api/auth/logout', { method: 'POST' })
     await clear()
+    await navigateTo('/auth/login')
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     useToast().add({
