@@ -38,8 +38,14 @@ const items = computed<NavigationMenuItem[]>(() =>
       ]
     : [
         {
+          label: 'Profile',
+          to: '/auth/profile',
+          active: route.path.startsWith('/auth/profile')
+        },
+        {
           label: 'Users',
-          to: '/users'
+          to: '/users',
+          active: route.path.startsWith('/users')
         }
       ]
 )
