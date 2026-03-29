@@ -2,6 +2,7 @@
 import type { NavigationMenuItem } from '@nuxt/ui'
 
 const route = useRoute()
+const { loggedIn } = useUserSession()
 
 useHead({
   meta: [{ name: 'viewport', content: 'width=device-width, initial-scale=1' }],
@@ -21,22 +22,27 @@ useSeoMeta({
   ogDescription: description
 })
 
-const items = computed<NavigationMenuItem[]>(() => [
-  {
-    label: 'Registration',
-    to: '/auth/register',
-    active: route.path.startsWith('/auth/register')
-  },
-  {
-    label: 'Login',
-    to: '/auth/login',
-    active: route.path.startsWith('/auth/login')
-  },
-  {
-    label: 'Users',
-    to: '/users'
-  }
-])
+const items = computed<NavigationMenuItem[]>(() =>
+  !loggedIn.value
+    ? [
+        {
+          label: 'Registration',
+          to: '/auth/register',
+          active: route.path.startsWith('/auth/register')
+        },
+        {
+          label: 'Login',
+          to: '/auth/login',
+          active: route.path.startsWith('/auth/login')
+        }
+      ]
+    : [
+        {
+          label: 'Users',
+          to: '/users'
+        }
+      ]
+)
 </script>
 
 <template>

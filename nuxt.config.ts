@@ -33,10 +33,6 @@ export default defineNuxtConfig({
     apiBase: process.env.BACKEND_API_BASE || 'http://localhost:3001'
   },
 
-  routeRules: {
-    '/': { prerender: true }
-  },
-
   compatibilityDate: '2025-01-15',
 
   eslint: {

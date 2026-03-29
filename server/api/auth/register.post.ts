@@ -18,6 +18,9 @@ export default defineEventHandler(async (event) => {
       .access_token
 
     await setUserSession(event, {
+      user: {
+        email: email
+      },
       secure: {
         token: access_token
       }

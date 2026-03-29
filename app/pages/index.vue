@@ -1,9 +1,11 @@
-<template>
-  <div>
-    <UPageHero
-      title="Ad Challenge - Frontend"
-      description="A simple Nuxt application that satisfies the requirements of the challenge. It consumes the API exposed by the NestJS backend that enable a full authentication flow."
-      :links="[
+<script setup lang="ts">
+import type { ButtonProps } from '@nuxt/ui'
+
+const { loggedIn } = useUserSession()
+
+const links = computed<ButtonProps[]>(() =>
+  !loggedIn.value
+    ? [
         {
           label: 'Sign up',
           to: '/auth/register',
@@ -18,7 +20,19 @@
           color: 'neutral',
           variant: 'subtle'
         }
-      ]"
+      ]
+    : []
+)
+const headline = computed(() => (loggedIn.value ? 'Welcome Back!' : ''))
+</script>
+
+<template>
+  <div>
+    <UPageHero
+      title="Ad Challenge - Frontend"
+      description="A simple Nuxt application that satisfies the requirements of the challenge. It consumes the API exposed by the NestJS backend that enable a full authentication flow."
+      :links="links"
+      :headline="headline"
     />
   </div>
 </template>

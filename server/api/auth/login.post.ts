@@ -10,7 +10,11 @@ export default defineEventHandler(async (event) => {
 
     const access_token = (response as { access_token: string }).access_token
 
+    const { email } = body
     await setUserSession(event, {
+      user: {
+        email: email
+      },
       secure: {
         token: access_token
       }
