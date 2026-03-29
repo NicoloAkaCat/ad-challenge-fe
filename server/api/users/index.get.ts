@@ -1,6 +1,5 @@
 export default defineEventHandler(async (event) => {
   const session = await getUserSession(event)
-  console.warn(session)
   const token = (session?.secure as { token: string } | undefined)?.token
 
   if (!token)
